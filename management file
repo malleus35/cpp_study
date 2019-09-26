@@ -1,0 +1,86 @@
+#include<stdio.h>                                     //출판사 매출관리 프로그램
+#include<string.h>
+#include<stdlib.h>
+
+struct book
+{
+	char name[30] = { 0 };
+	double sum = 0;
+
+};
+int main()
+{
+	FILE* fp = fopen("C:\\Users\\pc\\Desktop\\a.txt", "r");
+	FILE* fp2 = fopen("C:\\Users\\pc\\Desktop\\b.txt", "w");
+	struct book arr[11];
+	int i = 0,j=0;
+	int res;
+	
+	double number, price;
+
+
+	if (fp == NULL)
+	{
+		printf("작동x");
+		return 1;
+	}
+	if (fp2 == NULL)
+	{
+		printf("작동x");
+		return 1;
+	}
+
+	while (1)                                                      //책 제목 , 권수 ,가격 입력받기
+	{
+
+		res = fscanf(fp, "%s%lf%lf", arr[i].name, &number, &price);
+		if (res == EOF)
+			break;
+		for (j = 0;j < i;j++)
+		{
+
+			if (strcmp(arr[i].name, arr[j].name) == 0)
+			{
+			
+				i--;
+				break;
+			}
+		}
+		
+		
+	
+		
+		arr[j].sum += price * number * 10000;
+		i++;
+		if (i==11)
+			break;
+
+	}
+	i = 0;
+
+	struct book temp;
+	
+	for (int i = 0;i < 10;i++)                       //총금액순으로 놓기
+	{
+		for (int j = 0;j < i;j++)
+		{
+			if (arr[i].sum > arr[j].sum)
+			{
+				temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
+
+
+	while (1)                                     //출력하기
+	{
+		if (*(arr[i].name) == 0 ||i==10)
+			break;
+		fprintf(fp2,"%s-%.0lf원\n", arr[i].name, arr[i].sum);
+		i++;
+
+	}
+	return 0;
+}
